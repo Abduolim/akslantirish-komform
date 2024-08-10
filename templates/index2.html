@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polygon</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin: auto;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 12%;
+            box-sizing: border-box;
+            border-radius: 12px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .find-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 12px;
+            margin-right: 10%;
+        }
+
+        .clear-button {
+            background-color: #fc0000;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 12px;
+        }
+
+        .find-button:hover {
+            background-color: #45a049;
+        }
+
+        .clear-button:hover {
+            background-color: #ff0000;
+        }
+
+        button {
+            background-color: #0037ff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            width: 15%;
+            box-sizing: border-box;
+            border-radius: 12px;
+        }
+
+        button:hover {
+            background-color: #0037ff;
+        }
+
+        #result {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Transformations of Complex Numbers: w=az+b</h1>
+    <form method="post">
+        <label for="a">Enter a:</label>
+        <input type="text" id="a" name="a" placeholder="e.g., 2+1i" required>
+        <label for="b">Enter b:</label>
+        <input type="text" id="b" name="b" placeholder="e.g., 1-2i" required>
+        <label for="n">Enter the number of points (n &ge; 2):</label>
+        <input type="number" id="n" name="n" min="2" required>
+        <p style="color:red;">Enter the points of the polygon you want to insert in sequence!</p>
+        <div id="points-container"></div>
+        <button type="button" onclick="addPoints()">Add Points</button>
+        <div class="button-container">
+            <button class="find-button" type="find">Find</button>
+            <button class="clear-button" type="button" onclick="clearForm()">Clear</button>
+        </div>
+    </form>
+
+     {% if a and b %}
+                    <div id="w_func">
+                        <h3>Linear function</h3>
+                        <p> w = ({{ a }}) z + {{ b }} </p>
+                        <img src="data:image/png;base64,{{ plot }}" alt="Plot">
+                    </div>
+                {% endif %}
+     <h3>Linear function</h3>
+
+
+    <table>
+        <tr>
+            <th>Orginal Points</th>
+            <th>Final Points</th>
+        </tr>
+        <tr>
+            <td>
+                {% if polygon_points %}
+                    <div id="polygon">
+                        {% for point in polygon_points %}
+                            <ol>{{ point }}<br></ol>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+            <td>
+                {% if reflected_points %}
+                    <div id="result">
+                        {% for point in reflected_points %}
+                        <ol>{{ point }}<br></ol>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+
+    <script>
+
+    function clearForm() {
+
+        // Clear image
+        //document.querySelector('img').src = '';
+
+        // Clear table content
+        document.getElementById('polygon').innerHTML = '';
+        document.getElementById('result').innerHTML = '';
+        document.getElementById('w_func').innerHTML = '';
+
+            }
+
+        function addPoints() {
+            const n = document.getElementById('n').value;
+            const pointsContainer = document.getElementById('points-container');
+            pointsContainer.innerHTML = '';
+
+            for (let i = 1; i <= n; i++) {
+                if (i % 5 === 1) {
+                    // Create a new container for every 5 points
+                    const rowContainer = document.createElement('div');
+                    rowContainer.className = 'row-container';
+                    pointsContainer.appendChild(rowContainer);
+                }
+
+                const rowContainer = document.querySelector('.row-container:last-child');
+
+                const label = document.createElement('label');
+                label.innerText = ` z${i}: `;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.name = `z${i}`;
+                input.placeholder = 'e.g., 3+4i';
+                input.required = true;
+
+                rowContainer.appendChild(label);
+                rowContainer.appendChild(input);
+            }
+        }
+    </script>
+</body>
+</html>

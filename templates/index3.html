@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Circle</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 8px;
+            margin-bottom: 10px;
+            width: 20%;
+            box-sizing: border-box;
+            border-radius: 12px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .find-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 12px;
+            margin-right: 10%;
+        }
+
+        .clear-button {
+            background-color: #fc0000;
+            color: white;
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 12px;
+        }
+
+        .find-button:hover {
+            background-color: #45a049;
+        }
+
+        .clear-button:hover {
+            background-color: #ff0000;
+        }
+
+        #result {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Transformations of Complex Numbers: w=az+b</h1>
+    <form method="post">
+        <label for="center">Enter center of the circle (o):</label>
+        <input type="text" id="center" name="center" placeholder="e.g., 2+1i" required>
+        <label for="radius">Enter radius of the circle (r):</label>
+        <input type="text" id="radius" name="radius" placeholder="e.g., 3" required>
+        <label for="a">Enter complex number a:</label>
+        <input type="text" id="a" name="a" placeholder="e.g., 2+1i" required>
+        <label for="b">Enter complex number b:</label>
+        <input type="text" id="b" name="b" placeholder="e.g., 1-2i" required>
+        <div class="button-container">
+            <button class="find-button" type="find">Find</button>
+            <button class="clear-button" type="button" onclick="clearForm()">Clear</button>
+        </div>
+    </form>
+
+    {% if final_circle_center and final_circle_radius and o and r and a and b %}
+        <div id="result">
+            <h2 style="color:blue;">Orginal circle</h2>
+            <p> |z - ({{ o }})| ≤ {{ r }} </p>
+            <h2>Linear function</h2>
+            <p> w = ({{ a }}) z + {{ b }} </p>
+            <h2 style="color:red;">Final circle</h2>
+            <p> |z - ({{ final_circle_center }})| ≤ {{ final_circle_radius }} </p>
+            <img src="data:image/png;base64,{{ plot }}" alt="Plot">
+        </div>
+    {% endif %}
+
+    {% if error_message %}
+        <p class="error">{{ error_message }}</p>
+    {% endif %}
+
+    <script>
+        function clearForm() {
+            document.getElementById("result").style.display = "none";
+        }
+
+    </script>
+</body>
+</html>
